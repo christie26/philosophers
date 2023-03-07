@@ -1,4 +1,5 @@
-SRCS		= 	main.c
+SRCS		= 	main.c \
+				ft_atoi.c
 
 OBJS		:= $(SRCS:%.c=%.o)
 
