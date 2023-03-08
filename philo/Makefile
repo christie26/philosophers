@@ -12,7 +12,7 @@ OBJS		:= $(addprefix $(OBJ_DIR), $(OBJS))
 NAME		= ./philo
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 LDFLAGS		= -fsanitize=address
 RM			= rm -f
 
