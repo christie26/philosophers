@@ -14,8 +14,8 @@ OBJS		:= $(addprefix $(OBJ_DIR), $(OBJS))
 NAME		= ./philo
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g
-LDFLAGS		= -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror
+LDFLAGS		= -fsanitize=thread
 RM			= rm -f
 
 all:		${NAME}
@@ -24,10 +24,10 @@ $(OBJ_DIR):
 			mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
-			$(CC) $(CFLAGS) -c $< -o $@
+			$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@
 
 $(NAME): 	$(OBJS) $(LIBFT)
-			$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+			$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME) 
 
 clean:
 			${RM} ${OBJS}

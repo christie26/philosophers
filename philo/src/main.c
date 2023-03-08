@@ -23,7 +23,6 @@ int	check_input(int ac, char **av, t_argv *arg)
 int	main(int ac, char **av)
 {
 	t_argv		arg;
-	pthread_t	*thread;
 	t_philo		*philo;
     int 		status;
 	int			i;
@@ -31,24 +30,19 @@ int	main(int ac, char **av)
 	if (check_input(ac, av, &arg))
 		return (1);
 	
-	thread = (pthread_t *)malloc(sizeof(pthread_t) * arg.num);
 	philo = (t_philo *)malloc(sizeof(t_philo) * arg.num);
-	i = -1;
-	while (i++ < arg.num)
-		memset(&philo[i], 0, sizeof(t_philo));
-
 	arg.philo = philo;
 	i = 0;
 	while (i < arg.num)
 	{
 		arg.idx = i;
-    	pthread_create(&thread[i], NULL, each_philo, (void *)(&arg));
+    	pthread_create(&arg.philo[i].t_id, NULL, each_philo, (void *)(&arg));
 		i++;
 	}
 	i = 0;
 	while (i < arg.num)
 	{
-		pthread_join(thread[i], (void **)&status);
+		pthread_join(arg.philo[i].t_id, (void **)&status);
 		printf("%dth thread End\n", status);
 		i++;
 	}

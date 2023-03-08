@@ -14,8 +14,9 @@
 # define DIED 4
 
 typedef struct s_philo {
-	int	status;
-	int	count;
+	int			status;
+	int			ate;
+	pthread_t	t_id;
 }	t_philo;
 
 typedef struct s_argv {
