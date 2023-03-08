@@ -17,38 +17,7 @@ int	check_input(int ac, char **av, t_argv *arg)
 		arg->must = ft_atoi(av[5]);
 	gettimeofday(&mytime, 0);
 	arg->start_time = mytime.tv_usec;
-/*
-	// want to print arguments ?
-	printf("number_of_philosophers: %d\n", arg->philo);
-	printf("time_to_die (in milliseconds): %d\n", arg->die);
-	printf("time_to_eat (in milliseconds): %d\n", arg->eat);
-	printf("time_to_sleep (in milliseconds): %d\n", arg->sleep);
-	if (ac == 6)
-		printf("number_of_times_each_philosopher_must_eat: %d\n", arg->must);
-*/
 	return (0);
-}
-
-void *each_philo(void *data)
-{
-	t_argv	*arg;
-	t_philo	philo;
-
-	arg = (t_argv*)(data);
-	philo = arg->philo[arg->idx];
-	
-	philo.food = arg->idx;
-	printf("I am %dth philosophers\n", arg->idx);
-	return ((void *)(long)(arg->idx));
-}
-
-void	what_time(t_argv arg)
-{
-	struct timeval cur;
-	gettimeofday(&cur, 0);
-
-	printf("rn it's %d\n", cur.tv_usec - arg.start_time);
-
 }
 
 int	main(int ac, char **av)
@@ -56,23 +25,26 @@ int	main(int ac, char **av)
 	t_argv		arg;
 	pthread_t	*thread;
 	t_philo		*philo;
-    int status;
+    int 		status;
+	int			i;
 	
 	if (check_input(ac, av, &arg))
 		return (1);
 	
 	thread = (pthread_t *)malloc(sizeof(pthread_t) * arg.num);
 	philo = (t_philo *)malloc(sizeof(t_philo) * arg.num);
-	int i = 0;
+	i = -1;
+	while (i++ < arg.num)
+		memset(&philo[i], 0, sizeof(t_philo));
+
 	arg.philo = philo;
+	i = 0;
 	while (i < arg.num)
 	{
 		arg.idx = i;
     	pthread_create(&thread[i], NULL, each_philo, (void *)(&arg));
-		what_time(arg);
 		i++;
 	}
-
 	i = 0;
 	while (i < arg.num)
 	{

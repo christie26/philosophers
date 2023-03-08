@@ -22,41 +22,37 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
-
-void	ft_putstr_fd(char *str, int fd)
-{
-	write(fd, str, ft_strlen(str));
-}
-
-void	ft_putendl_fd(char *str, int fd)
-{
-	ft_putstr_fd(str, fd);
-	write(fd, '\n', 1);
-}
-
 void	ft_err_msg(int condition, char *error_message, char *file, int line)
 {
 	if (!condition)
 		return ;
-	ft_putstr_fd(file, STDERR_FILENO);
-	ft_putchar_fd(':', STDERR_FILENO);
-	ft_putstr_fd(ft_atoi(line), STDERR_FILENO);
-	ft_putstr_fd(": error: ", STDERR_FILENO);
-	ft_putendl_fd(error_message, STDERR_FILENO);
-	exit (EXIT_FAILURE);
+	write(2, file, ft_strlen(file));
+	write(2, ":", 1);
+	(void)(line);
+//	ft_putnbr(line);
+	write(2, ": error: ", 9);
+	write(2, error_message, ft_strlen(error_message));
+	write(2, "\n", 1);
+	exit (1);
 }
 
 void	ft_err_sys(int condition, char *file, int line)
 {
 	if (!condition)
 		return ;
-	ft_putstr_fd(file, STDERR_FILENO);
-	ft_putchar_fd(':', STDERR_FILENO);
-	ft_putstr_fd(ft_atoi(line), STDERR_FILENO);
-	perror(": error");
-	exit (EXIT_FAILURE);
+	write(2, file, ft_strlen(file));
+	write(2, ":", 1);
+	(void)(line);
+//	ft_putnbr(line);
+	write(2, ": error", 9);
+	exit (1);
+}
+
+int	what_time(t_argv arg)
+{
+	struct timeval cur;
+	gettimeofday(&cur, 0);
+
+	printf("rn it's %d\n", cur.tv_usec - arg.start_time);
+	return (cur.tv_usec - arg.start_time);
 }

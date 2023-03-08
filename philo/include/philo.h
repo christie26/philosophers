@@ -6,10 +6,16 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <string.h>
+
+# define EAT 1
+# define SLEEP 2
+# define THINK 3
+# define DIED 4
 
 typedef struct s_philo {
-	int		idx;
-	int		food;
+	int	status;
+	int	count;
 }	t_philo;
 
 typedef struct s_argv {
@@ -24,13 +30,11 @@ typedef struct s_argv {
 }	t_argv;
 
 //utils
-int	ft_atoi(const char *str);
-int	ft_strlen(char *str);
-
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *str, int fd);
-void	ft_putendl_Fd(char *str, int fd);
+int		ft_atoi(const char *str);
 void	ft_err_msg(int condition, char *error_message, char *file, int line);
 void	ft_err_sys(int condition, char *file, int line);
+int		what_time(t_argv arg);
+
+void	*each_philo(void *data);
 
 #endif
