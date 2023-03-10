@@ -1,5 +1,5 @@
 SRCS		= 	main.c \
-				ft_atoi.c \
+				philo_setup.c \
 				philo_utils.c \
 				philosophers.c
 

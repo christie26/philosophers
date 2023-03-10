@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:43:30 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/07 17:44:11 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/10 21:01:02 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,32 @@ void	ft_err_sys(int condition, char *file, int line)
 int	what_time(t_argv arg)
 {
 	struct timeval cur;
-	gettimeofday(&cur, 0);
 
+	gettimeofday(&cur, 0);
 	printf("rn it's %d\n", cur.tv_usec - arg.start_time);
 	return (cur.tv_usec - arg.start_time);
+}
+
+int	ft_atoi(const char *str)
+{
+	int			i;
+	long long	sum;
+	int			sign;
+
+	i = 0;
+	sum = 0;
+	sign = 0;
+	if (str[i] == '-')
+	{
+		sign = 1;
+		i++;
+	}
+	while (('0' <= str[i]) && (str[i] <= '9'))
+	{
+		sum = (sum * 10) + (str[i] - '0');
+		i++;
+	}
+	if (sign == 1)
+		sum = -sum;
+	return (sum);
 }
