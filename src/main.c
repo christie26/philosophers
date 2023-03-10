@@ -24,6 +24,14 @@ int	main(int ac, char **av)
 	get_argument(ac, av, &arg);
 	philo = (t_philo *)malloc(sizeof(t_philo) * arg.num);
 	fork = (t_fork *)malloc(sizeof(t_fork) * arg.num * 2);
+	i = 0;
+	while (i < arg.num)
+	{
+		fork[i].mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+		pthread_mutex_init(fork[i].mutex, 0);
+		i++;
+	}
+	printf("finish init\n");
 	create_thread(arg, philo, &fork);
 	i = 0;
 	while (i < arg.num)
@@ -35,7 +43,7 @@ int	main(int ac, char **av)
 	i = 0;
 	while (i < arg.num)
 	{
-		pthread_mutex_destroy(&fork[i].mutex);
+		pthread_mutex_destroy(fork[i].mutex);
 		i++;
 	}
 	return (0);
