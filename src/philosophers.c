@@ -76,8 +76,12 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(philo->left->mutex);
 	pthread_mutex_unlock(philo->right->mutex);
 
+	philo->status = SLEEP;
+	printf("%d start sleeping\n", philo->id);
+	usleep(philo->arg->sleep);
+	printf("%d finish sleeping\n", philo->id);
+
 	philo->status = THINK;
-	usleep(100);
 
 }
 
