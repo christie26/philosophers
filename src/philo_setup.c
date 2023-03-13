@@ -33,12 +33,12 @@ int	create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 	t_fork	*fork;
 
 	fork = *f_ptr;
-	i = 0;
-	while (i < arg.num)
-	{
-		pthread_mutex_init(fork[i].mutex, 0);
-		i++;
-	}
+//	i = 0;
+//	while (i < arg.num)
+//	{
+//		pthread_mutex_init(fork[i].mutex, 0);
+//		i++;
+//	}
 	i = 0;
 	while (i < arg.num)
 	{
@@ -49,6 +49,7 @@ int	create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 			philo[i].right = &fork[0];
 		else
 			philo[i].right = &fork[i + 1];
+		philo->ate = get_time();
 	//	philo[i].file = &file;
 		pthread_create(&philo[i].t_id, NULL, &each_philo, (&philo[i]));
 		i++;

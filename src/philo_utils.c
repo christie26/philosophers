@@ -48,6 +48,16 @@ void	ft_err_sys(int condition, char *file, int line)
 	exit (1);
 }
 
+int	get_time(void)
+{
+	struct timeval cur;
+
+	gettimeofday(&cur, 0);
+	printf("tv_sec: %ld\n", cur.tv_sec);
+	printf("tv_usec: %d\n", cur.tv_usec);
+	return (cur.tv_usec);
+}
+
 int	what_time(t_argv arg)
 {
 	struct timeval cur;

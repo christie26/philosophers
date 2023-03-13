@@ -61,6 +61,7 @@ int		ft_atoi(const char *str);
 void	ft_err_msg(int condition, char *error_message, char *file, int line);
 void	ft_err_sys(int condition, char *file, int line);
 int		what_time(t_argv arg);
+int		get_time(void);
 
 void	*each_philo(void *data);
 

@@ -27,8 +27,9 @@ void	philo_init(t_philo *philo)
 			pthread_mutex_lock(philo->right->mutex);
 			philo->left->fork = 1;
 			philo->right->fork = 1;
-			printf("%d start eating\n", philo->id);
-			
+			printf("init %d start eating\n", philo->id);
+			philo->ate = get_time()/1000;
+		//	printf("%d %d\n", philo->id, philo->ate);	
 			philo->status = EAT;
 		}
 	}
@@ -40,7 +41,9 @@ void	philo_init(t_philo *philo)
 			pthread_mutex_lock(philo->right->mutex);
 			philo->left->fork = 1;
 			philo->right->fork = 1;
-			printf("%d start eating\n", philo->id);
+			printf("init %d start eating\n", philo->id);
+			philo->ate = get_time()/1000;	
+		//	printf("%d %d\n", philo->id, philo->ate);	
 			philo->status = EAT;
 		}
 	}	
@@ -51,7 +54,6 @@ void	philo_eat(t_philo *philo)
 
 	while (philo->status != EAT)
 	{
-		sleep(3);
 		if (philo->left->fork == 0)
 		{
 			pthread_mutex_lock(philo->left->mutex);
@@ -64,22 +66,28 @@ void	philo_eat(t_philo *philo)
 		}
 		if (philo->left->fork && philo->right->fork)
 		{
-			printf("%d start eating\n", philo->id);
+			if (get_time()/1000 - philo->ate > philo->arg->die)
+			{
+				philo->status = DIED;
+		//		printf("%d died \n", philo->id);
+				exit (1);
+			}
+			philo->ate = get_time()/1000;
+			printf("%d start eat %d\n", philo->id, philo->ate);	
 			philo->status = EAT;
 		}
 	}
-
-	usleep(philo->arg->eat);	// eating
-	printf("%d finish eating\n", philo->id);
-	philo->left->fork = 0;	
-	philo->right->fork = 0;	
+	usleep(philo->arg->eat * 1000);	// eating
+//	printf("%d finish eat %d\n", philo->id, get_time()/1000);
+	philo->left->fork = 0;
+	philo->right->fork = 0;
 	pthread_mutex_unlock(philo->left->mutex);
 	pthread_mutex_unlock(philo->right->mutex);
 
 	philo->status = SLEEP;
-	printf("%d start sleeping\n", philo->id);
-	usleep(philo->arg->sleep);
-	printf("%d finish sleeping\n", philo->id);
+//	printf("%d start sleep %d\n", philo->id, get_time()/1000);
+	usleep(philo->arg->sleep * 1000);
+//	printf("%d finish sleep %d\n", philo->id, get_time()/1000);
 
 	philo->status = THINK;
 
@@ -93,6 +101,7 @@ void	*each_philo(void *data)
 	printf("I am %dth philosophers\n", philo->id);
 
 	philo_init(philo);
+	printf("%d %d\n", philo->id, get_time()/1000);
 	while (philo->status != DIED)
 	{
 		philo_eat(philo);	
