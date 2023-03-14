@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:49:47 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/14 12:26:09 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:14:51 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ int	main(int ac, char **av)
 	{
 		fork[i].mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init(fork[i].mutex, 0);
+		fork[i].fork = 0;
 		i++;
 	}
-	create_thread(arg, philo, &fork);
+	ft_create_thread(arg, philo, &fork);
 	i = 0;
 	while (i < arg.num)
 	{

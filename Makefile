@@ -15,7 +15,7 @@ NAME		= ./philo
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
-LDFLAGS		= -fsanitize=thread
+LDFLAGS		= -g3 -fsanitize=thread
 RM			= rm -f
 
 all:		${NAME}

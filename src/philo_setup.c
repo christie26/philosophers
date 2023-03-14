@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/14 12:38:42 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 17:08:18 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	get_argument(int ac, char **av, t_argv *arg)
 	arg->start_time = start;
 }
 
-int	create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
+int	ft_create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 {
 	int	i;
 	t_fork	*fork;
@@ -36,15 +36,17 @@ int	create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 	i = 0;
 	while (i < arg.num)
 	{
-		philo[i].id = i;
+		philo[i].id = i + 1;
 		philo[i].arg = &arg;
 		philo[i].left = &fork[i];
-		if (i == arg.num - 1)
-			philo[i].right = &fork[0];
-		else
-			philo[i].right = &fork[i + 1];
+		philo[i].right = &fork[(i + 1) % arg.num];
 		philo->ate = get_time();
 	//	philo[i].file = &file;
+		i++;
+	}
+	i = 0;
+	while (i < arg.num)
+	{
 		pthread_create(&philo[i].t_id, NULL, &each_philo, (&philo[i]));
 		i++;
 	}
