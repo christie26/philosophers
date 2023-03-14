@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/10 21:05:08 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 12:38:42 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	get_argument(int ac, char **av, t_argv *arg)
 {
-	struct timeval	mytime;
+	struct timeval	start;
 
 	ft_err_msg(ac != 5 && ac != 6, "Invalid argument number !", __FILE__, __LINE__);
 	arg->num = ft_atoi(av[1]);
@@ -23,8 +23,8 @@ void	get_argument(int ac, char **av, t_argv *arg)
 	arg->sleep = ft_atoi(av[4]);
 	if (ac == 6)
 		arg->must = ft_atoi(av[5]);
-	gettimeofday(&mytime, 0);
-	arg->start_time = mytime.tv_usec;
+	gettimeofday(&start, 0);
+	arg->start_time = start;
 }
 
 int	create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
@@ -33,12 +33,6 @@ int	create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 	t_fork	*fork;
 
 	fork = *f_ptr;
-//	i = 0;
-//	while (i < arg.num)
-//	{
-//		pthread_mutex_init(fork[i].mutex, 0);
-//		i++;
-//	}
 	i = 0;
 	while (i < arg.num)
 	{

@@ -6,12 +6,13 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:47:27 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/10 21:05:06 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 12:38:40 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
+// in this function, they don't start eating. They just take forks
 void	philo_init(t_philo *philo)
 {
 	int	i;
@@ -27,10 +28,6 @@ void	philo_init(t_philo *philo)
 			pthread_mutex_lock(philo->right->mutex);
 			philo->left->fork = 1;
 			philo->right->fork = 1;
-			printf("init %d start eating\n", philo->id);
-			philo->ate = get_time()/1000;
-		//	printf("%d %d\n", philo->id, philo->ate);	
-			philo->status = EAT;
 		}
 	}
 	else
@@ -41,17 +38,12 @@ void	philo_init(t_philo *philo)
 			pthread_mutex_lock(philo->right->mutex);
 			philo->left->fork = 1;
 			philo->right->fork = 1;
-			printf("init %d start eating\n", philo->id);
-			philo->ate = get_time()/1000;	
-		//	printf("%d %d\n", philo->id, philo->ate);	
-			philo->status = EAT;
 		}
 	}	
 }
 
 void	philo_eat(t_philo *philo)
 {
-
 	while (philo->status != EAT)
 	{
 		if (philo->left->fork == 0)
@@ -66,28 +58,24 @@ void	philo_eat(t_philo *philo)
 		}
 		if (philo->left->fork && philo->right->fork)
 		{
-			if (get_time()/1000 - philo->ate > philo->arg->die)
+			if (time_stamp(philo->ate) > philo->arg->die)
 			{
 				philo->status = DIED;
-		//		printf("%d died \n", philo->id);
-				exit (1);
+				return;
 			}
-			philo->ate = get_time()/1000;
-			printf("%d start eat %d\n", philo->id, philo->ate);	
+			philo->ate = get_time();
+			printf("%d: %d start eat\n", time_stamp(philo->arg->start_time), philo->id + 1);
 			philo->status = EAT;
 		}
 	}
 	usleep(philo->arg->eat * 1000);	// eating
-//	printf("%d finish eat %d\n", philo->id, get_time()/1000);
 	philo->left->fork = 0;
 	philo->right->fork = 0;
 	pthread_mutex_unlock(philo->left->mutex);
 	pthread_mutex_unlock(philo->right->mutex);
 
 	philo->status = SLEEP;
-//	printf("%d start sleep %d\n", philo->id, get_time()/1000);
 	usleep(philo->arg->sleep * 1000);
-//	printf("%d finish sleep %d\n", philo->id, get_time()/1000);
 
 	philo->status = THINK;
 
@@ -98,13 +86,13 @@ void	*each_philo(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)(data);
-	printf("I am %dth philosophers\n", philo->id);
+	printf("I am %dth philosophers\n", philo->id + 1);
 
 	philo_init(philo);
-	printf("%d %d\n", philo->id, get_time()/1000);
 	while (philo->status != DIED)
 	{
-		philo_eat(philo);	
-	}	
-	return ((void *)(long)(philo->id));
+		philo_eat(philo);
+	}
+//	return ((void *)(long)(philo->id));
+	return (0);
 }

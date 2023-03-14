@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:43:30 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/10 21:01:02 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 12:19:53 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,25 @@ void	ft_err_sys(int condition, char *file, int line)
 	exit (1);
 }
 
-int	get_time(void)
+struct timeval	get_time(void)
 {
 	struct timeval cur;
 
 	gettimeofday(&cur, 0);
-	printf("tv_sec: %ld\n", cur.tv_sec);
-	printf("tv_usec: %d\n", cur.tv_usec);
-	return (cur.tv_usec);
+	return (cur);
 }
 
-int	what_time(t_argv arg)
+int	time_stamp(struct timeval start)
 {
 	struct timeval cur;
+	int	tv_sec;
+	int	tv_usec;
 
-	gettimeofday(&cur, 0);
-	printf("rn it's %d\n", cur.tv_usec - arg.start_time);
-	return (cur.tv_usec - arg.start_time);
+	cur = get_time();
+	tv_sec = (int)(cur.tv_sec - start.tv_sec);
+	tv_usec = cur.tv_usec - start.tv_usec;
+	tv_usec += tv_sec * 1000000;
+	return (tv_usec/1000);
 }
 
 int	ft_atoi(const char *str)

@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/10 21:04:55 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 12:38:38 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_argv {
 	int		eat;
 	int		sleep;
 	int		must;
-	int		start_time;
+	struct timeval	start_time;
 }	t_argv;
 
 // 쓰기 상태
@@ -44,12 +44,12 @@ typedef struct s_fork {
 typedef struct s_philo {
 	int				id;
 	int				status;
-	int				ate;
+	struct timeval	ate;
 	pthread_t		t_id;
 	t_argv			*arg;
 	t_fork			*left;
 	t_fork			*right;
-	pthread_mutex_t	*file;
+//	pthread_mutex_t	*file;
 }	t_philo;
 
 // set-up
@@ -57,11 +57,11 @@ void	get_argument(int ac, char **av, t_argv *arg);
 int		create_thread(t_argv arg, t_philo *philo, t_fork **fork);
 
 //utils
-int		ft_atoi(const char *str);
-void	ft_err_msg(int condition, char *error_message, char *file, int line);
-void	ft_err_sys(int condition, char *file, int line);
-int		what_time(t_argv arg);
-int		get_time(void);
+int				ft_atoi(const char *str);
+void			ft_err_msg(int condition, char *error_message, char *file, int line);
+void			ft_err_sys(int condition, char *file, int line);
+struct timeval	get_time(void);
+int				time_stamp(struct timeval start);
 
 void	*each_philo(void *data);
 

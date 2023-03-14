@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:49:47 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/10 20:58:47 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 12:26:09 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	main(int ac, char **av)
 		pthread_mutex_init(fork[i].mutex, 0);
 		i++;
 	}
-//	printf("finish init\n");
 	create_thread(arg, philo, &fork);
 	i = 0;
 	while (i < arg.num)
