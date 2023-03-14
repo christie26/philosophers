@@ -1,7 +1,8 @@
 SRCS		= 	main.c \
 				philo_setup.c \
 				philo_utils.c \
-				philosophers.c
+				philosophers.c \
+				log_print.c
 
 OBJS		:= $(SRCS:%.c=%.o)
 

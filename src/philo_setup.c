@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/14 17:08:18 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:46:32 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ int	ft_create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 {
 	int	i;
 	t_fork	*fork;
+	pthread_mutex_t	file;
 
 	fork = *f_ptr;
+	pthread_mutex_init(&file, 0);
 	i = 0;
 	while (i < arg.num)
 	{
@@ -40,8 +42,8 @@ int	ft_create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 		philo[i].arg = &arg;
 		philo[i].left = &fork[i];
 		philo[i].right = &fork[(i + 1) % arg.num];
-		philo->ate = get_time();
-	//	philo[i].file = &file;
+		philo[i].ate = get_time();
+		philo[i].file = &file;
 		i++;
 	}
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/14 17:08:13 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:44:56 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_philo {
 	t_argv			*arg;
 	t_fork			*left;
 	t_fork			*right;
-//	pthread_mutex_t	*file;
+	pthread_mutex_t	*file;
 }	t_philo;
 
 // set-up
@@ -57,6 +57,7 @@ void	get_argument(int ac, char **av, t_argv *arg);
 int		ft_create_thread(t_argv arg, t_philo *philo, t_fork **fork);
 
 //utils
+int				ft_strlen(char *str);
 int				ft_atoi(const char *str);
 void			ft_err_msg(int condition, char *error_message, char *file, int line);
 void			ft_err_sys(int condition, char *file, int line);
@@ -64,5 +65,6 @@ struct timeval	get_time(void);
 int				time_stamp(struct timeval start);
 
 void	*each_philo(void *data);
+void	log_print(t_philo *philo, int status);
 
 #endif
