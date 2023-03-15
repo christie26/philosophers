@@ -27,15 +27,15 @@
 # define DIED 4
 
 typedef struct s_argv {
-	int		num;
-	int		die;
-	int		eat;
-	int		sleep;
-	int		must;
+	int				num;
+	int				die;
+	int				eat;
+	int				sleep;
+	int				must;
 	struct timeval	start_time;
+	pthread_mutex_t	write;
 }	t_argv;
 
-// 쓰기 상태
 typedef struct s_fork {
 	pthread_mutex_t	*mutex;
 	int				fork;
@@ -49,7 +49,6 @@ typedef struct s_philo {
 	t_argv			*arg;
 	t_fork			*left;
 	t_fork			*right;
-	pthread_mutex_t	*file;
 }	t_philo;
 
 // set-up
@@ -65,6 +64,6 @@ struct timeval	get_time(void);
 int				time_stamp(struct timeval start);
 
 void	*each_philo(void *data);
-void	log_print(t_philo *philo, int status);
+void	philo_print(t_philo *philo, int status);
 
 #endif

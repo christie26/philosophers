@@ -16,26 +16,23 @@ void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left->mutex);
 	pthread_mutex_lock(philo->right->mutex);
-	log_print(philo, 1);
+	philo_print(philo, 1);
 	if (time_stamp(philo->ate) > philo->arg->die)
 	{
-		printf("%d\n", time_stamp(philo->ate));
 		philo->status = DIED;
 		return;
 	}
 	philo->ate = get_time();
-	log_print(philo, 2);
-	printf("%d %d is eating\n", time_stamp(philo->arg->start_time), philo->id);
+	philo_print(philo, 2);
 	philo->status = EAT;
-	usleep(philo->arg->eat * 1000);	// eating
+	usleep(philo->arg->eat * 1000);
 	pthread_mutex_unlock(philo->right->mutex);
 	pthread_mutex_unlock(philo->left->mutex);
-
 	philo->status = SLEEP;
 	usleep(philo->arg->sleep * 1000);
-
+	philo_print(philo, 3);
 	philo->status = THINK;
-
+	philo_print(philo, 4);
 }
 
 void	*each_philo(void *data)
@@ -49,6 +46,6 @@ void	*each_philo(void *data)
 	{
 		philo_eat(philo);
 	}
-	printf("%d %d died\n", time_stamp(philo->arg->start_time), philo->id);
+	philo_print(philo, 5);
 	return (0);
 }

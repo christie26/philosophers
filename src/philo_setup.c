@@ -29,13 +29,14 @@ void	get_argument(int ac, char **av, t_argv *arg)
 
 int	ft_create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 {
-	int	i;
-	t_fork	*fork;
-	pthread_mutex_t	file;
+	int				i;
+	t_fork			*fork;
+	pthread_mutex_t	write;
 
 	fork = *f_ptr;
-	pthread_mutex_init(&file, 0);
 	i = 0;
+	pthread_mutex_init(&write, 0);
+	arg.write = write;
 	while (i < arg.num)
 	{
 		philo[i].id = i + 1;
@@ -43,7 +44,6 @@ int	ft_create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
 		philo[i].left = &fork[i];
 		philo[i].right = &fork[(i + 1) % arg.num];
 		philo[i].ate = get_time();
-		philo[i].file = &file;
 		i++;
 	}
 	i = 0;

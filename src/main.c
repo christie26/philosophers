@@ -20,7 +20,6 @@ int	main(int ac, char **av)
 	int		status;
 	int		i;
 
-//	pthread_mutex_t	file;    다시 살려야 돼
 	get_argument(ac, av, &arg);
 	philo = (t_philo *)malloc(sizeof(t_philo) * arg.num);
 	fork = (t_fork *)malloc(sizeof(t_fork) * arg.num * 2);

@@ -67,12 +67,13 @@ char	*ft_itoa(int n)
 	res[digit] = 0;
 	return (res);
 }
-void	log_print(t_philo *philo, int status)
+
+void	philo_print(t_philo *philo, int status)
 {
 	char	*time;
 	char	*id;
 
-	pthread_mutex_lock(philo->file);
+	pthread_mutex_lock(&philo->arg->write);
 	time = ft_itoa(time_stamp(philo->arg->start_time));
 	id = ft_itoa(philo->id);
 	write(1, time, ft_strlen(time));
@@ -82,15 +83,16 @@ void	log_print(t_philo *philo, int status)
 	if (status == 1)
 		write(1, "has taken a fork\n", 17);
 	else if (status == 2)
-		write(1, "eating\n", 7);
+		write(1, "is eating\n", 10);
 	else if (status == 3)
-		write(1, "sleeping\n", 9);
+		write(1, "is sleeping\n", 12);
 	else if (status == 4)
-		write(1, "thinking\n", 9);
+		write(1, "is thinking\n", 12);
 	else
 		write(1, "died\n", 5);
-	
-	pthread_mutex_unlock(philo->file);
+	pthread_mutex_unlock(&philo->arg->write);
+	free(time);
+	free(id);
 }
 
 /*
