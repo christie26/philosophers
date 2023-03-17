@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   philo_act.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:47:27 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/17 11:39:32 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/17 20:07:25 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	philo_eat(t_philo *philo)
 	if (time_stamp(philo->ate) > philo->arg->die)
 	{
 		philo->status = DIED;
+		philo_dead(philo, 1);
 		return;
 	}
 	philo->ate = get_time();
@@ -33,6 +34,36 @@ void	philo_eat(t_philo *philo)
 	philo_print(philo, 3);
 	philo->status = THINK;
 	philo_print(philo, 4);
+}
+
+// 0 -> check, 1-> died
+int	philo_dead(t_philo *philo, int flag)
+{
+	printf("%p\n", &philo->arg->dead.mutex);
+	if (flag)
+	{
+		printf("%d will die soon\n", philo->id);
+		pthread_mutex_lock(&philo->arg->dead.mutex);
+		philo->arg->dead.flag = 1;
+		pthread_mutex_unlock(&philo->arg->dead.mutex);
+		return (1);
+	}
+	else
+	{
+//		printf("%d b\n", time_stamp(philo->arg->start_time));
+		pthread_mutex_lock(&philo->arg->dead.mutex);
+		if (philo->arg->dead.flag)
+		{
+			pthread_mutex_unlock(&philo->arg->dead.mutex);
+			return (1);
+		}
+		else
+		{
+//			printf("%d c\n", time_stamp(philo->arg->start_time));
+			pthread_mutex_unlock(&philo->arg->dead.mutex);
+			return (0);
+		}
+	}
 }
 
 void	*each_philo(void *data)

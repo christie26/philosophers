@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/17 11:42:08 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/17 20:07:22 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,11 @@ void	get_argument(int ac, char **av, t_argv *arg)
 	arg->start_time = start;
 }
 
-int	ft_set_philo(t_argv arg, t_philo *philo, t_fork **f_ptr)
-{
-	(void)(arg);
-	(void)(philo);
-	(void)(f_ptr);
-	return (0);
-}
-
 int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
 {
 	int				i;
 	pthread_mutex_t	write;
+//	t_dead			dead;
 
 	i = -1;
 	while (++i < arg.num)
@@ -47,7 +40,10 @@ int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
 		fork[i].fork = 0;
 	}
 	pthread_mutex_init(&write, 0);
+	pthread_mutex_init(&arg.dead.mutex, 0);
+	arg.dead.flag = 0;
 	arg.write = write;
+//	arg.dead = &dead;
 	i = -1;
 	while (++i < arg.num)
 	{

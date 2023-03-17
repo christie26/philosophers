@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/17 11:45:41 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/17 20:07:31 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 # define THINK 3
 # define DIED 4
 
+typedef struct s_dead {
+	int				flag;
+	pthread_mutex_t	mutex;
+}	t_dead;
+
 typedef struct s_argv {
 	int				num;
 	int				die;
@@ -34,6 +39,7 @@ typedef struct s_argv {
 	int				must;
 	struct timeval	start_time;
 	pthread_mutex_t	write;
+	t_dead			dead;
 }	t_argv;
 
 typedef struct s_fork {
@@ -65,5 +71,6 @@ int				time_stamp(struct timeval start);
 
 void	*each_philo(void *data);
 void	philo_print(t_philo *philo, int status);
+int		philo_dead(t_philo *philo, int flag);
 
 #endif
