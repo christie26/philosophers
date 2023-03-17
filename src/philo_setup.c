@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/14 18:46:32 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/17 11:42:08 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	get_argument(int ac, char **av, t_argv *arg)
 {
 	struct timeval	start;
 
-	ft_err_msg(ac != 5 && ac != 6, "Invalid argument number !", __FILE__, __LINE__);
+	ft_err_msg(ac != 5 && ac != 6, "Invalid argument number !", 0, 0);
 	arg->num = ft_atoi(av[1]);
 	arg->die = ft_atoi(av[2]);
 	arg->eat = ft_atoi(av[3]);
@@ -27,30 +27,38 @@ void	get_argument(int ac, char **av, t_argv *arg)
 	arg->start_time = start;
 }
 
-int	ft_create_thread(t_argv arg, t_philo *philo, t_fork **f_ptr)
+int	ft_set_philo(t_argv arg, t_philo *philo, t_fork **f_ptr)
+{
+	(void)(arg);
+	(void)(philo);
+	(void)(f_ptr);
+	return (0);
+}
+
+int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
 {
 	int				i;
-	t_fork			*fork;
 	pthread_mutex_t	write;
 
-	fork = *f_ptr;
-	i = 0;
+	i = -1;
+	while (++i < arg.num)
+	{
+		pthread_mutex_init(&fork[i].mutex, 0);
+		fork[i].fork = 0;
+	}
 	pthread_mutex_init(&write, 0);
 	arg.write = write;
-	while (i < arg.num)
+	i = -1;
+	while (++i < arg.num)
 	{
 		philo[i].id = i + 1;
 		philo[i].arg = &arg;
 		philo[i].left = &fork[i];
 		philo[i].right = &fork[(i + 1) % arg.num];
 		philo[i].ate = get_time();
-		i++;
 	}
-	i = 0;
-	while (i < arg.num)
-	{
+	i = -1;
+	while (++i < arg.num)
 		pthread_create(&philo[i].t_id, NULL, &each_philo, (&philo[i]));
-		i++;
-	}
 	return (0);
 }

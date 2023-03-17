@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:47:27 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/14 18:47:39 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/17 11:39:32 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	philo_eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left->mutex);
-	pthread_mutex_lock(philo->right->mutex);
+	pthread_mutex_lock(&philo->left->mutex);
+	pthread_mutex_lock(&philo->right->mutex);
 	philo_print(philo, 1);
 	if (time_stamp(philo->ate) > philo->arg->die)
 	{
@@ -26,8 +26,8 @@ void	philo_eat(t_philo *philo)
 	philo_print(philo, 2);
 	philo->status = EAT;
 	usleep(philo->arg->eat * 1000);
-	pthread_mutex_unlock(philo->right->mutex);
-	pthread_mutex_unlock(philo->left->mutex);
+	pthread_mutex_unlock(&philo->right->mutex);
+	pthread_mutex_unlock(&philo->left->mutex);
 	philo->status = SLEEP;
 	usleep(philo->arg->sleep * 1000);
 	philo_print(philo, 3);

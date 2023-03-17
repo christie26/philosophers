@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/14 18:44:56 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/17 11:45:41 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_argv {
 }	t_argv;
 
 typedef struct s_fork {
-	pthread_mutex_t	*mutex;
+	pthread_mutex_t	mutex;
 	int				fork;
 }	t_fork;
 
@@ -53,7 +53,7 @@ typedef struct s_philo {
 
 // set-up
 void	get_argument(int ac, char **av, t_argv *arg);
-int		ft_create_thread(t_argv arg, t_philo *philo, t_fork **fork);
+int		ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork);
 
 //utils
 int				ft_strlen(char *str);

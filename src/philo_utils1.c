@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/10 13:49:47 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/17 11:40:16 by yoonsele         ###   ########.fr       */
+/*   Created: 2023/03/07 17:43:30 by yoonsele          #+#    #+#             */
+/*   Updated: 2023/03/17 11:44:42 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	main(int ac, char **av)
+struct timeval	get_time(void)
 {
-	t_argv	arg;
-	t_philo	*philo;
-	t_fork	*fork;
-	int		i;
+	struct timeval	cur;
 
-	get_argument(ac, av, &arg);
-	philo = (t_philo *)malloc(sizeof(t_philo) * arg.num);
-	fork = (t_fork *)malloc(sizeof(t_fork) * arg.num * 2);
-	ft_create_thread(arg, philo, fork);
-	i = 0;
-	while (i < arg.num)
-	{
-		pthread_join(philo[i].t_id, 0);
-		i++;
-	}
-	i = 0;
-	while (i < arg.num)
-	{
-		pthread_mutex_destroy(&fork[i].mutex);
-		i++;
-	}
-	return (0);
+	gettimeofday(&cur, 0);
+	return (cur);
+}
+
+int	time_stamp(struct timeval start)
+{
+	struct timeval	cur;
+	int				tv_sec;
+	int				tv_usec;
+
+	cur = get_time();
+	tv_sec = (int)(cur.tv_sec - start.tv_sec);
+	tv_usec = cur.tv_usec - start.tv_usec;
+	tv_usec += tv_sec * 1000000;
+	return (tv_usec / 1000);
 }

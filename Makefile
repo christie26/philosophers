@@ -1,6 +1,7 @@
 SRCS		= 	main.c \
 				philo_setup.c \
-				philo_utils.c \
+				philo_utils1.c \
+				philo_utils2.c \
 				philosophers.c \
 				philo_print.c
 
