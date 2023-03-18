@@ -6,25 +6,48 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/18 19:23:55 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/18 20:56:40 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	get_argument(int ac, char **av, t_argv *arg)
+int	get_argument(int ac, char **av, t_argv *arg)
 {
 	struct timeval	start;
 
-	ft_err_msg(ac != 5 && ac != 6, "Invalid argument number !", 0, 0);
+	if (ft_err_msg(ac != 5 && ac != 6, "Invalid argument number !"))
+		return (1);
 	arg->num = ft_atoi(av[1]);
 	arg->die = ft_atoi(av[2]);
 	arg->eat = ft_atoi(av[3]);
 	arg->sleep = ft_atoi(av[4]);
 	if (ac == 6)
 		arg->must = ft_atoi(av[5]);
+	if (ft_err_msg((!arg->num || !arg->die || !arg->eat || !arg->sleep), \
+				"Invalid argument value !"))
+		return (1);
+	if (ac == 6 && ft_err_msg(!arg->must, "Invalid argument value !"))
+		return (1);
 	gettimeofday(&start, 0);
 	arg->start_time = start;
+	return (0);
+}
+
+void	philo_set(t_argv *arg, t_philo *philo, t_fork *fork)
+{
+	int	i;
+
+	i = -1;
+	while (++i < arg->num)
+	{
+		philo[i].id = i + 1;
+		philo[i].arg = arg;
+		philo[i].left = &fork[i];
+		philo[i].right = &fork[(i + 1) % arg->num];
+		philo[i].ate = get_time();
+		philo[i].time = 0;
+	}
 }
 
 int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
@@ -35,25 +58,23 @@ int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
 	i = -1;
 	while (++i < arg.num)
 	{
-		pthread_mutex_init(&fork[i].mutex, 0);
+		if (ft_err_msg(!pthread_mutex_init(&fork[i].mutex, 0), "Fail p_m_init"))
+			return (1);
 		fork[i].status = 0;
 	}
-	pthread_mutex_init(&write, 0);
-	pthread_mutex_init(&arg.dead.mutex, 0);
+	if (ft_err_msg(!pthread_mutex_init(&write, 0), "Fail mutex_init"))
+		return (1);
+	if (ft_err_msg(!pthread_mutex_init(&arg.dead.mutex, 0), "Fail mutex_init"))
+		return (1);
 	arg.dead.flag = 0;
 	arg.write = write;
+	philo_set(&arg, philo, fork);
 	i = -1;
 	while (++i < arg.num)
 	{
-		philo[i].id = i + 1;
-		philo[i].arg = &arg;
-		philo[i].left = &fork[i];
-		philo[i].right = &fork[(i + 1) % arg.num];
-		philo[i].ate = get_time();
-		philo[i].time = 0;
+		if (ft_err_msg(!pthread_create(&philo[i].t_id, 0, \
+						&each_philo, (&philo[i])), "Fail pthread_create"))
+			return (1);
 	}
-	i = -1;
-	while (++i < arg.num)
-		pthread_create(&philo[i].t_id, NULL, &each_philo, (&philo[i]));
 	return (0);
 }

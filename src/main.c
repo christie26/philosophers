@@ -6,11 +6,33 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:49:47 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/18 19:17:07 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/18 20:54:56 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+int	ft_clear_thread_mutex(t_argv arg, t_philo *philo, t_fork *fork)
+{
+	int	i;
+
+	i = 0;
+	while (i < arg.num)
+	{
+		if (ft_err_msg(!pthread_join(philo[i].t_id, 0), "Fail p_join()"))
+			return (1);
+		i++;
+	}
+	i = 0;
+	while (i < arg.num)
+	{
+		if (ft_err_msg(!pthread_mutex_destroy(&fork[i].mutex), \
+					"Fail p_m_destroy"))
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	main(int ac, char **av)
 {
@@ -19,21 +41,17 @@ int	main(int ac, char **av)
 	t_fork	*fork;
 	int		i;
 
-	get_argument(ac, av, &arg);
+	if (get_argument(ac, av, &arg))
+		return (1);
 	philo = (t_philo *)malloc(sizeof(t_philo) * arg.num);
+	if (ft_err_msg(!philo, "Fail to malloc()"))
+		return (1);
 	fork = (t_fork *)malloc(sizeof(t_fork) * arg.num * 2);
-	ft_create_thread(arg, philo, fork);
-	i = 0;
-	while (i < arg.num)
-	{
-		pthread_join(philo[i].t_id, 0);
-		i++;
-	}
-	i = 0;
-	while (i < arg.num)
-	{
-		pthread_mutex_destroy(&fork[i].mutex);
-		i++;
-	}
+	if (ft_err_msg(!fork, "Fail to malloc()"))
+		return (1);
+	if (ft_create_thread(arg, philo, fork))
+		return (1);
+	if (ft_clear_thread_mutex(arg, philo, fork))
+		return (1);
 	return (0);
 }
