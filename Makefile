@@ -26,9 +26,12 @@ $(OBJ_DIR):
 			mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
-			$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@
+			$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): 	$(OBJS) $(LIBFT)
+			$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+
+sani: 		$(OBJS) $(LIBFT)
 			$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME) 
 
 clean:

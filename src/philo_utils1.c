@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:43:30 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/17 19:46:42 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:01:55 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,13 @@ int	time_stamp(struct timeval start)
 	tv_usec = cur.tv_usec - start.tv_usec;
 	tv_usec += tv_sec * 1000000;
 	return (tv_usec / 1000);
+}
+
+void	ft_usleep(int time)
+{
+	struct timeval	start;
+
+	start = get_time();
+	while (time_stamp(start) > time)
+		usleep(100);
 }

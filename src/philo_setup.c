@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/17 20:07:22 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:31:50 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
 {
 	int				i;
 	pthread_mutex_t	write;
-//	t_dead			dead;
 
 	i = -1;
 	while (++i < arg.num)
@@ -43,7 +42,6 @@ int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
 	pthread_mutex_init(&arg.dead.mutex, 0);
 	arg.dead.flag = 0;
 	arg.write = write;
-//	arg.dead = &dead;
 	i = -1;
 	while (++i < arg.num)
 	{

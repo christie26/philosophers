@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/17 20:07:31 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:02:02 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ struct timeval	get_time(void);
 int				time_stamp(struct timeval start);
 
 void	*each_philo(void *data);
-void	philo_print(t_philo *philo, int status);
+void	philo_print(t_philo *philo, char *message);
 int		philo_dead(t_philo *philo, int flag);
 
 #endif
