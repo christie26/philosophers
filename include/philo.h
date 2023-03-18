@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/18 16:02:02 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/18 19:23:48 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,13 @@ typedef struct s_argv {
 
 typedef struct s_fork {
 	pthread_mutex_t	mutex;
-	int				fork;
+	int				status;
 }	t_fork;
 
 typedef struct s_philo {
 	int				id;
 	int				status;
+	int				time;
 	struct timeval	ate;
 	pthread_t		t_id;
 	t_argv			*arg;
@@ -68,9 +69,11 @@ void			ft_err_msg(int condition, char *error_message, char *file, int line);
 void			ft_err_sys(int condition, char *file, int line);
 struct timeval	get_time(void);
 int				time_stamp(struct timeval start);
+void			ft_usleep(int time);
 
 void	*each_philo(void *data);
 void	philo_print(t_philo *philo, char *message);
 int		philo_dead(t_philo *philo, int flag);
+void	philo_sleep_think(t_philo *philo);
 
 #endif
