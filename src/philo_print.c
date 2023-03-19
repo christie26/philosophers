@@ -16,26 +16,24 @@ void	philo_print(t_philo *philo, char *message)
 {
 	int		time;
 
-	pthread_mutex_lock(&philo->arg->write);
+	pthread_mutex_lock(philo->arg->write);
 	time = time_stamp(philo->arg->start_time);
 	if (philo_dead(philo, 0))
 	{
 		if (!message)
 			printf("%d %d %s\n", time, philo->id, "died");
-		pthread_mutex_unlock(&philo->arg->write);
+		pthread_mutex_unlock(philo->arg->write);
 		return ;
 	}
 	else
 	{
 		printf("%d %d %s\n", time, philo->id, message);
-		pthread_mutex_unlock(&philo->arg->write);
+		pthread_mutex_unlock(philo->arg->write);
 	}
 }
 
 void	philo_sleep_think(t_philo *philo)
 {
-	if (philo_dead(philo, 0))
-		return ;
 	philo_print(philo, "is sleeping");
 	usleep(philo->arg->sleep * 1000);
 	philo->status = SLEEP;
@@ -45,29 +43,28 @@ void	philo_sleep_think(t_philo *philo)
 	philo->status = THINK;
 }
 
-// 0: check
-// 1: kill
 int	philo_dead(t_philo *philo, int flag)
 {
 	if (flag)
 	{
-		pthread_mutex_lock(&philo->arg->dead.mutex);
-		philo->arg->dead.flag = 1;
-		pthread_mutex_unlock(&philo->arg->dead.mutex);
+		pthread_mutex_lock(philo->arg->dead);
+		*philo->arg->flag = 1;
+		pthread_mutex_unlock(philo->arg->dead);
 		philo_print(philo, 0);
+		philo->status = DIED;
 		return (1);
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->arg->dead.mutex);
-		if (philo->arg->dead.flag)
+		pthread_mutex_lock(philo->arg->dead);
+		if (*philo->arg->flag)
 		{
-			pthread_mutex_unlock(&philo->arg->dead.mutex);
+			pthread_mutex_unlock(philo->arg->dead);
 			return (1);
 		}
 		else
 		{
-			pthread_mutex_unlock(&philo->arg->dead.mutex);
+			pthread_mutex_unlock(philo->arg->dead);
 			return (0);
 		}
 	}

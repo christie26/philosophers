@@ -38,8 +38,9 @@ typedef struct s_argv {
 	int				sleep;
 	int				must;
 	struct timeval	start_time;
-	pthread_mutex_t	write;
-	t_dead			dead;
+	pthread_mutex_t	*write;
+	pthread_mutex_t	*dead;
+	int				*flag;
 }	t_argv;
 
 typedef struct s_fork {
@@ -60,7 +61,7 @@ typedef struct s_philo {
 
 // set-up
 int	get_argument(int ac, char **av, t_argv *arg);
-int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork);
+int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork);
 
 //utils
 int				ft_strlen(char *str);

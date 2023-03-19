@@ -12,14 +12,9 @@
 
 #include "../include/philo.h"
 
-// 0: get fork
-// 1: died
 int	take_lfork(t_philo *philo)
 {
-	int	take;
-
-	take = 0;
-	while (!take)
+	while (1)
 	{
 		if (time_stamp(philo->ate) > philo->arg->die)
 		{
@@ -29,22 +24,22 @@ int	take_lfork(t_philo *philo)
 		pthread_mutex_lock(&philo->left->mutex);
 		if (philo->left->status == 0)
 		{
-			philo->left->status = philo->id;
+			philo->left->status = 1;
 			pthread_mutex_unlock(&philo->left->mutex);
-			take = 1;
+			break;
 		}
-		pthread_mutex_unlock(&philo->left->mutex);
-		usleep(1000);
+		else
+		{
+			pthread_mutex_unlock(&philo->left->mutex);
+			usleep(100);
+		}
 	}
 	return (0);
 }
 
 int	take_rfork(t_philo *philo)
 {
-	int	take;
-
-	take = 0;
-	while (!take)
+	while (1)
 	{
 		if (time_stamp(philo->ate) > philo->arg->die)
 		{
@@ -54,12 +49,15 @@ int	take_rfork(t_philo *philo)
 		pthread_mutex_lock(&philo->right->mutex);
 		if (philo->right->status == 0)
 		{
-			philo->right->status = philo->id;
+			philo->right->status = 1;
 			pthread_mutex_unlock(&philo->right->mutex);
-			take = 1;
+			break ;
 		}
-		pthread_mutex_unlock(&philo->right->mutex);
-		usleep(1000);
+		else
+		{
+			pthread_mutex_unlock(&philo->right->mutex);
+			usleep(100);
+		}
 	}
 	return (0);
 }
@@ -87,8 +85,6 @@ void	philo_fork(t_philo *philo)
 void	philo_eat(t_philo *philo)
 {
 	philo->ate = get_time();
-	if (philo_dead(philo, 0))
-		return ;
 	philo_print(philo, "is eating");
 	usleep(philo->arg->eat * 1000);
 	pthread_mutex_lock(&philo->right->mutex);
@@ -104,14 +100,20 @@ void	*each_philo(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)(data);
+//	printf("%d ptr2 = %p\n", philo->id, philo);
 	if (philo->id % 2)
 		usleep(philo->arg->eat * 1000);
+//	printf("I'm %d\n", philo->id);
 	while (philo->status != DIED)
 	{
 		if (philo_dead(philo, 0))
 			break ;
 		philo_fork(philo);
+		if (philo_dead(philo, 0))
+			break ;
 		philo_eat(philo);
+		if (philo_dead(philo, 0))
+			break ;
 		philo_sleep_think(philo);
 	}
 	return (0);

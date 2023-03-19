@@ -19,14 +19,14 @@ int	ft_clear_thread_mutex(t_argv arg, t_philo *philo, t_fork *fork)
 	i = 0;
 	while (i < arg.num)
 	{
-		if (ft_err_msg(!pthread_join(philo[i].t_id, 0), "Fail p_join()"))
+		if (ft_err_msg(pthread_join(philo[i].t_id, 0), "Fail p_join()"))
 			return (1);
 		i++;
 	}
 	i = 0;
 	while (i < arg.num)
 	{
-		if (ft_err_msg(!pthread_mutex_destroy(&fork[i].mutex), \
+		if (ft_err_msg(pthread_mutex_destroy(&fork[i].mutex), \
 					"Fail p_m_destroy"))
 			return (1);
 		i++;
@@ -39,7 +39,6 @@ int	main(int ac, char **av)
 	t_argv	arg;
 	t_philo	*philo;
 	t_fork	*fork;
-	int		i;
 
 	if (get_argument(ac, av, &arg))
 		return (1);
@@ -49,7 +48,7 @@ int	main(int ac, char **av)
 	fork = (t_fork *)malloc(sizeof(t_fork) * arg.num * 2);
 	if (ft_err_msg(!fork, "Fail to malloc()"))
 		return (1);
-	if (ft_create_thread(arg, philo, fork))
+	if (ft_create_thread(&arg, &philo, &fork))
 		return (1);
 	if (ft_clear_thread_mutex(arg, philo, fork))
 		return (1);

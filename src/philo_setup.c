@@ -34,46 +34,52 @@ int	get_argument(int ac, char **av, t_argv *arg)
 	return (0);
 }
 
-void	philo_set(t_argv *arg, t_philo *philo, t_fork *fork)
+void	philo_set(t_argv *arg, t_philo **philo, t_fork *fork)
 {
 	int	i;
 
 	i = -1;
 	while (++i < arg->num)
 	{
-		philo[i].id = i + 1;
-		philo[i].arg = arg;
-		philo[i].left = &fork[i];
-		philo[i].right = &fork[(i + 1) % arg->num];
-		philo[i].ate = get_time();
-		philo[i].time = 0;
+		(*philo)[i].id = i + 1;
+		(*philo)[i].arg = arg;
+		(*philo)[i].left = &fork[i];
+		(*philo)[i].right = &fork[(i + 1) % arg->num];
+		(*philo)[i].ate = get_time();
+		(*philo)[i].status = 1;
+		(*philo)[i].time = 0;
 	}
 }
 
-int	ft_create_thread(t_argv arg, t_philo *philo, t_fork *fork)
+int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 {
 	int				i;
+	int				flag;
 	pthread_mutex_t	write;
+	pthread_mutex_t	dead;
 
 	i = -1;
-	while (++i < arg.num)
+	while (++i < arg->num)
 	{
-		if (ft_err_msg(!pthread_mutex_init(&fork[i].mutex, 0), "Fail p_m_init"))
+		if (ft_err_msg(pthread_mutex_init(&(*fork)[i].mutex, 0), "Fail p_m_init"))
 			return (1);
-		fork[i].status = 0;
+		(*fork)[i].status = 0;
 	}
-	if (ft_err_msg(!pthread_mutex_init(&write, 0), "Fail mutex_init"))
+	if (ft_err_msg(pthread_mutex_init(&write, 0), "Fail mutex_init"))
 		return (1);
-	if (ft_err_msg(!pthread_mutex_init(&arg.dead.mutex, 0), "Fail mutex_init"))
+	if (ft_err_msg(pthread_mutex_init(&dead, 0), "Fail mutex_init"))
 		return (1);
-	arg.dead.flag = 0;
-	arg.write = write;
-	philo_set(&arg, philo, fork);
+	arg->dead = &dead;
+	arg->write = &write;
+	flag = 0;
+	arg->flag = &flag;
+	philo_set(arg, philo, *fork);
 	i = -1;
-	while (++i < arg.num)
+	while (++i < arg->num)
 	{
-		if (ft_err_msg(!pthread_create(&philo[i].t_id, 0, \
-						&each_philo, (&philo[i])), "Fail pthread_create"))
+//		printf("%d ptr = %p\n", (*philo)[i].id, &(*philo)[i]);
+		if (ft_err_msg(pthread_create(&(*philo)[i].t_id, 0, \
+						&each_philo, (&(*philo)[i])), "Fail pthread_create"))
 			return (1);
 	}
 	return (0);
