@@ -103,7 +103,6 @@ void	*each_philo(void *data)
 //	printf("%d ptr2 = %p\n", philo->id, philo);
 	if (philo->id % 2)
 		usleep(philo->arg->eat * 1000);
-//	printf("I'm %d\n", philo->id);
 	while (philo->status != DIED)
 	{
 		if (philo_dead(philo, 0))

@@ -77,7 +77,7 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 	i = -1;
 	while (++i < arg->num)
 	{
-//		printf("%d ptr = %p\n", (*philo)[i].id, &(*philo)[i]);
+//		printf("%d ptr1 = %p\n", (*philo)[i].id, &(*philo)[i]);
 		if (ft_err_msg(pthread_create(&(*philo)[i].t_id, 0, \
 						&each_philo, (&(*philo)[i])), "Fail pthread_create"))
 			return (1);
