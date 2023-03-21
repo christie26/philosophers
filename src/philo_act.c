@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:47:27 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/18 20:58:05 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 15:41:00 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	take_lfork(t_philo *philo)
 		{
 			philo->left->status = 1;
 			pthread_mutex_unlock(&philo->left->mutex);
-			break;
+			break ;
 		}
 		else
 		{
@@ -70,7 +70,9 @@ void	philo_fork(t_philo *philo)
 		return ;
 	}
 	if (philo_dead(philo, 0))
+	{
 		return ;
+	}
 	philo_print(philo, "has taken a fork");
 	if (take_rfork(philo))
 	{
@@ -101,7 +103,7 @@ void	*each_philo(void *data)
 
 	philo = (t_philo *)(data);
 	if (philo->id % 2)
-		ft_usleep(philo->arg->eat * 1000);
+		usleep(500);
 	while (philo->status != DIED)
 	{
 		if (philo_dead(philo, 0))

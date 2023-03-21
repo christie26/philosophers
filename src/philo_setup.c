@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/18 20:56:40 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:03:47 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,22 @@ void	philo_set(t_argv *arg, t_philo **philo, t_fork *fork)
 	}
 }
 
+int	ft_fork_init(t_fork **ptr, int num)
+{
+	t_fork	*fork;
+	int		i;
+
+	fork = *ptr;
+	i = -1;
+	while (++i < num)
+	{
+		if (pthread_mutex_init(&fork[i].mutex, 0))
+			return (1);
+		fork[i].status = 0;
+	}
+	return (0);
+}
+
 int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 {
 	int				i;
@@ -58,13 +74,6 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 	pthread_mutex_t	write;
 	pthread_mutex_t	dead;
 
-	i = -1;
-	while (++i < arg->num)
-	{
-		if (ft_err_msg(pthread_mutex_init(&(*fork)[i].mutex, 0), "Fail p_m_init"))
-			return (1);
-		(*fork)[i].status = 0;
-	}
 	if (ft_err_msg(pthread_mutex_init(&write, 0), "Fail mutex_init"))
 		return (1);
 	if (ft_err_msg(pthread_mutex_init(&dead, 0), "Fail mutex_init"))
@@ -77,10 +86,10 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 	i = -1;
 	while (++i < arg->num)
 	{
-//		printf("%d ptr1 = %p\n", (*philo)[i].id, &(*philo)[i]);
 		if (ft_err_msg(pthread_create(&(*philo)[i].t_id, 0, \
 						&each_philo, (&(*philo)[i])), "Fail pthread_create"))
 			return (1);
+		usleep(100);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/18 20:44:40 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:01:45 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_philo {
 
 // set-up
 int	get_argument(int ac, char **av, t_argv *arg);
+int	ft_fork_init(t_fork **ptr, int num);
 int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork);
 
 //utils

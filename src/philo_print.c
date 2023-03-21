@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 18:29:13 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/18 20:58:03 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 15:41:23 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	philo_print(t_philo *philo, char *message)
 
 	pthread_mutex_lock(philo->arg->write);
 	time = time_stamp(philo->arg->start_time);
-	
 	if (!message)
 	{
 		if (die == 0)
@@ -28,7 +27,7 @@ void	philo_print(t_philo *philo, char *message)
 		pthread_mutex_unlock(philo->arg->write);
 		return ;
 	}
-	if (!philo_dead(philo, 0))	
+	if (!philo_dead(philo, 0))
 		printf("%d %d %s\n", time, philo->id, message);
 	pthread_mutex_unlock(philo->arg->write);
 }
