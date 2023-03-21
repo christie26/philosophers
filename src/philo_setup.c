@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/21 16:03:47 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:19:00 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	philo_set(t_argv *arg, t_philo **philo, t_fork *fork)
 		(*philo)[i].arg = arg;
 		(*philo)[i].left = &fork[i];
 		(*philo)[i].right = &fork[(i + 1) % arg->num];
-		(*philo)[i].ate = get_time();
+//		(*philo)[i].ate = get_time();
 		(*philo)[i].status = 1;
 		(*philo)[i].time = 0;
 	}
@@ -73,15 +73,22 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 	int				flag;
 	pthread_mutex_t	write;
 	pthread_mutex_t	dead;
+	int				ready_num;
+	pthread_mutex_t	ready;
 
 	if (ft_err_msg(pthread_mutex_init(&write, 0), "Fail mutex_init"))
 		return (1);
 	if (ft_err_msg(pthread_mutex_init(&dead, 0), "Fail mutex_init"))
 		return (1);
-	arg->dead = &dead;
+	if (ft_err_msg(pthread_mutex_init(&ready, 0), "Fail mutex_init"))
+		return (1);
+	ready_num = 0;
+	arg->ready_num = &ready_num;
 	arg->write = &write;
+	arg->dead = &dead;
 	flag = 0;
 	arg->flag = &flag;
+	arg->ready = &ready;
 	philo_set(arg, philo, *fork);
 	i = -1;
 	while (++i < arg->num)

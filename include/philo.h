@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/21 16:01:45 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:19:15 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct s_argv {
 	struct timeval	start_time;
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*dead;
+	pthread_mutex_t	*ready;
+	int				*ready_num;
 	int				*flag;
 }	t_argv;
 

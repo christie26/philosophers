@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:47:27 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/21 15:41:00 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:18:58 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,22 @@ void	philo_eat(t_philo *philo)
 void	*each_philo(void *data)
 {
 	t_philo	*philo;
+	int		waiting;
 
 	philo = (t_philo *)(data);
+
+	pthread_mutex_lock(philo->arg->ready);
+	*philo->arg->ready_num += 1;
+	pthread_mutex_unlock(philo->arg->ready);
+	waiting = 1;
+	while (waiting)
+	{
+		pthread_mutex_lock(philo->arg->ready);
+		waiting = (*philo->arg->ready_num != philo->arg->num);
+		pthread_mutex_unlock(philo->arg->ready);
+		usleep(100);
+	}
+	philo->ate = get_time();
 	if (philo->id % 2)
 		usleep(500);
 	while (philo->status != DIED)
