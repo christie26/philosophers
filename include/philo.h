@@ -34,9 +34,9 @@ typedef struct s_argv {
 	int				sleep;
 	int				must;
 	struct timeval	start_time;
-	pthread_mutex_t	*write;
-	pthread_mutex_t	*dead;
-	pthread_mutex_t	*ready;
+	pthread_mutex_t	write;
+	pthread_mutex_t	dead;
+	pthread_mutex_t	ready;
 	int				*ready_num;
 	int				*flag;
 }	t_argv;

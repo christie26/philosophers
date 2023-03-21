@@ -98,7 +98,10 @@ int	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->right->mutex);
 	philo->time += 1;
 	if (philo->time == philo->arg->must && philo->arg->option)
+	{
+	//	printf("%d is done\n", philo->id);
 		return (1);
+	}
 	return (0);
 }
 
@@ -108,15 +111,15 @@ void	*each_philo(void *data)
 	int		waiting;
 
 	philo = (t_philo *)(data);
-	pthread_mutex_lock(philo->arg->ready);
+	pthread_mutex_lock(&philo->arg->ready);
 	*philo->arg->ready_num += 1;
-	pthread_mutex_unlock(philo->arg->ready);
+	pthread_mutex_unlock(&philo->arg->ready);
 	waiting = 1;
 	while (waiting)
 	{
-		pthread_mutex_lock(philo->arg->ready);
+		pthread_mutex_lock(&philo->arg->ready);
 		waiting = (*philo->arg->ready_num != philo->arg->num);
-		pthread_mutex_unlock(philo->arg->ready);
+		pthread_mutex_unlock(&philo->arg->ready);
 		usleep(100);
 	}
 	philo->ate = get_time();

@@ -71,24 +71,18 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 {
 	int				i;
 	int				flag;
-	pthread_mutex_t	write;
-	pthread_mutex_t	dead;
 	int				ready_num;
-	pthread_mutex_t	ready;
 
-	if (ft_err_msg(pthread_mutex_init(&write, 0), "Fail mutex_init"))
+	if (ft_err_msg(pthread_mutex_init(&arg->write, 0), "Fail mutex_init"))
 		return (1);
-	if (ft_err_msg(pthread_mutex_init(&dead, 0), "Fail mutex_init"))
+	if (ft_err_msg(pthread_mutex_init(&arg->dead, 0), "Fail mutex_init"))
 		return (1);
-	if (ft_err_msg(pthread_mutex_init(&ready, 0), "Fail mutex_init"))
+	if (ft_err_msg(pthread_mutex_init(&arg->ready, 0), "Fail mutex_init"))
 		return (1);
 	ready_num = 0;
 	arg->ready_num = &ready_num;
-	arg->write = &write;
-	arg->dead = &dead;
 	flag = 0;
 	arg->flag = &flag;
-	arg->ready = &ready;
 	philo_set(arg, philo, *fork);
 	i = -1;
 	while (++i < arg->num)
@@ -96,7 +90,7 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 		if (ft_err_msg(pthread_create(&(*philo)[i].t_id, 0, \
 						&each_philo, (&(*philo)[i])), "Fail pthread_create"))
 			return (1);
-		usleep(100);
+		usleep(300);
 	}
 	return (0);
 }

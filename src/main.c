@@ -32,11 +32,11 @@ int	ft_clear_thread_mutex(t_argv *arg, t_philo **philo, t_fork **fork)
 			return (1);
 		i++;
 	}
-	if (ft_err_msg(pthread_mutex_destroy(arg->write), "Fail p_m_destroy2"))
+	if (ft_err_msg(pthread_mutex_destroy(&arg->write), "Fail p_m_destroy2"))
 		return (1);
-	if (ft_err_msg(pthread_mutex_destroy(arg->dead), "Fail p_m_destroy3"))
+	if (ft_err_msg(pthread_mutex_destroy(&arg->dead), "Fail p_m_destroy3"))
 		return (1);
-	if (ft_err_msg(pthread_mutex_destroy(arg->ready), "Fail p_m_destroy4"))
+	if (ft_err_msg(pthread_mutex_destroy(&arg->ready), "Fail p_m_destroy4"))
 		return (1);
 	return (0);
 }
