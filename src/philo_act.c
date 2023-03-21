@@ -31,7 +31,7 @@ int	take_lfork(t_philo *philo)
 		else
 		{
 			pthread_mutex_unlock(&philo->left->mutex);
-			usleep(100);
+			ft_usleep(100);
 		}
 	}
 	return (0);
@@ -56,7 +56,7 @@ int	take_rfork(t_philo *philo)
 		else
 		{
 			pthread_mutex_unlock(&philo->right->mutex);
-			usleep(100);
+			ft_usleep(100);
 		}
 	}
 	return (0);
@@ -86,7 +86,7 @@ void	philo_eat(t_philo *philo)
 {
 	philo->ate = get_time();
 	philo_print(philo, "is eating");
-	usleep(philo->arg->eat * 1000);
+	ft_usleep(philo->arg->eat * 1000);
 	pthread_mutex_lock(&philo->right->mutex);
 	philo->right->status = 0;
 	pthread_mutex_unlock(&philo->right->mutex);
@@ -100,9 +100,8 @@ void	*each_philo(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)(data);
-//	printf("%d ptr2 = %p\n", philo->id, philo);
 	if (philo->id % 2)
-		usleep(philo->arg->eat * 1000);
+		ft_usleep(philo->arg->eat * 1000);
 	while (philo->status != DIED)
 	{
 		if (philo_dead(philo, 0))

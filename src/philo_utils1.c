@@ -38,6 +38,8 @@ void	ft_usleep(int time)
 	struct timeval	start;
 
 	start = get_time();
-	while (time_stamp(start) > time)
+	while (time_stamp(start) < time / 1000)
+	{
 		usleep(100);
+	}
 }

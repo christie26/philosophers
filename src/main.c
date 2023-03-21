@@ -19,6 +19,7 @@ int	ft_clear_thread_mutex(t_argv arg, t_philo *philo, t_fork *fork)
 	i = 0;
 	while (i < arg.num)
 	{
+		printf("I will join %d\n", philo[i].id);
 		if (ft_err_msg(pthread_join(philo[i].t_id, 0), "Fail p_join()"))
 			return (1);
 		i++;
@@ -50,6 +51,7 @@ int	main(int ac, char **av)
 		return (1);
 	if (ft_create_thread(&arg, &philo, &fork))
 		return (1);
+	printf("finish create\n");
 	if (ft_clear_thread_mutex(arg, philo, fork))
 		return (1);
 	return (0);
