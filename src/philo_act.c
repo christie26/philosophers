@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:47:27 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/21 19:18:58 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 22:31:41 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,39 +62,44 @@ int	take_rfork(t_philo *philo)
 	return (0);
 }
 
-void	philo_fork(t_philo *philo)
+int	philo_fork(t_philo *philo)
 {
 	if (take_lfork(philo))
 	{
-		philo_dead(philo, 1);
-		return ;
+		philo_dead(philo);
+		return (1);
 	}
-	if (philo_dead(philo, 0))
-	{
-		return ;
-	}
+	if (ft_check_dead(philo))
+		return (1);
 	philo_print(philo, "has taken a fork");
 	if (take_rfork(philo))
 	{
-		philo_dead(philo, 1);
-		return ;
+		philo_dead(philo);
+		return (1);
 	}
-	if (philo_dead(philo, 0))
-		return ;
+	if (ft_check_dead(philo))
+		return (1);
 	philo_print(philo, "has taken a fork");
+	return (0);
 }
 
-void	philo_eat(t_philo *philo)
+int	philo_eat(t_philo *philo)
 {
+	if (ft_check_dead(philo))
+		return (1);
 	philo->ate = get_time();
 	philo_print(philo, "is eating");
 	ft_usleep(philo->arg->eat * 1000);
-	pthread_mutex_lock(&philo->right->mutex);
-	philo->right->status = 0;
-	pthread_mutex_unlock(&philo->right->mutex);
 	pthread_mutex_lock(&philo->left->mutex);
 	philo->left->status = 0;
 	pthread_mutex_unlock(&philo->left->mutex);
+	pthread_mutex_lock(&philo->right->mutex);
+	philo->right->status = 0;
+	pthread_mutex_unlock(&philo->right->mutex);
+	philo->time += 1;
+	if (philo->time == philo->arg->must && philo->arg->option)
+		return (1);
+	return (0);
 }
 
 void	*each_philo(void *data)
@@ -103,7 +108,6 @@ void	*each_philo(void *data)
 	int		waiting;
 
 	philo = (t_philo *)(data);
-
 	pthread_mutex_lock(philo->arg->ready);
 	*philo->arg->ready_num += 1;
 	pthread_mutex_unlock(philo->arg->ready);
@@ -120,15 +124,14 @@ void	*each_philo(void *data)
 		usleep(500);
 	while (philo->status != DIED)
 	{
-		if (philo_dead(philo, 0))
+		if (philo_fork(philo))
 			break ;
-		philo_fork(philo);
-		if (philo_dead(philo, 0))
+		if (philo_eat(philo))
 			break ;
-		philo_eat(philo);
-		if (philo_dead(philo, 0))
+		if (philo_sleep_think(philo))
 			break ;
-		philo_sleep_think(philo);
+		if (ft_check_dead(philo))
+			break ;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:54:43 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/21 19:19:15 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 22:27:12 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,8 @@
 # define THINK 3
 # define DIED 4
 
-typedef struct s_dead {
-	int				flag;
-	pthread_mutex_t	mutex;
-}	t_dead;
-
 typedef struct s_argv {
+	int				option;
 	int				num;
 	int				die;
 	int				eat;
@@ -73,10 +69,11 @@ int				ft_err_msg(int condition, char *error_message);
 struct timeval	get_time(void);
 int				time_stamp(struct timeval start);
 void			ft_usleep(int time);
+int				ft_check_dead(t_philo *philo);
 
 void	*each_philo(void *data);
 void	philo_print(t_philo *philo, char *message);
-int		philo_dead(t_philo *philo, int flag);
-void	philo_sleep_think(t_philo *philo);
+int		philo_dead(t_philo *philo);
+int		philo_sleep_think(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 20:37:40 by yoonsele          #+#    #+#             */
-/*   Updated: 2023/03/21 19:19:00 by yoonsele         ###   ########.fr       */
+/*   Updated: 2023/03/21 22:31:40 by yoonsele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	get_argument(int ac, char **av, t_argv *arg)
 		return (1);
 	gettimeofday(&start, 0);
 	arg->start_time = start;
+	arg->option = ac - 5;
 	return (0);
 }
 
@@ -45,7 +46,6 @@ void	philo_set(t_argv *arg, t_philo **philo, t_fork *fork)
 		(*philo)[i].arg = arg;
 		(*philo)[i].left = &fork[i];
 		(*philo)[i].right = &fork[(i + 1) % arg->num];
-//		(*philo)[i].ate = get_time();
 		(*philo)[i].status = 1;
 		(*philo)[i].time = 0;
 	}
