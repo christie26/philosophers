@@ -77,6 +77,6 @@ int				take_lfork(t_philo *philo);
 int				take_rfork(t_philo *philo);
 void			philo_print(t_philo *philo, char *message);
 int				ft_check_dead(t_philo *philo);
-void			philo_wait(t_philo **philo);
+void			philo_wait(t_philo *philo);
 
 #endif

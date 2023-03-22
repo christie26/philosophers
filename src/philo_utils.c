@@ -94,19 +94,19 @@ int	ft_check_dead(t_philo *philo)
 	}
 }
 
-void	philo_wait(t_philo **philo)
+void	philo_wait(t_philo *philo)
 {
 	int		waiting;
 
-	pthread_mutex_lock(&(*philo)->arg->ready);
-	*(*philo)->arg->ready_num += 1;
-	pthread_mutex_unlock(&(*philo)->arg->ready);
+	pthread_mutex_lock(&philo->arg->ready);
+	*philo->arg->ready_num += 1;
+	pthread_mutex_unlock(&philo->arg->ready);
 	waiting = 1;
 	while (waiting)
 	{
-		pthread_mutex_lock(&(*philo)->arg->ready);
-		waiting = (*(*philo)->arg->ready_num != (*philo)->arg->num);
-		pthread_mutex_unlock(&(*philo)->arg->ready);
+		pthread_mutex_lock(&philo->arg->ready);
+		waiting = (*philo->arg->ready_num != philo->arg->num);
+		pthread_mutex_unlock(&philo->arg->ready);
 		usleep(100);
 	}
 }

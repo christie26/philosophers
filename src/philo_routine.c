@@ -54,11 +54,22 @@ int	philo_fork(t_philo *philo)
 
 int	philo_eat(t_philo *philo)
 {
+	int	eat;
+
 	if (ft_check_dead(philo))
 		return (1);
 	philo->ate = ft_get_time();
 	philo_print(philo, "is eating");
-	ft_usleep(philo->arg->eat * 1000);
+	eat = 0;
+	while (eat < philo->arg->eat * 1000)
+	{
+		if (time_stamp(philo->ate) > philo->arg->die)
+			philo_dead(philo);
+		if (ft_check_dead(philo))
+			return (1);
+		usleep(500);
+		eat += 500;
+	}
 	pthread_mutex_lock(&philo->left->mutex);
 	philo->left->status = 0;
 	pthread_mutex_unlock(&philo->left->mutex);
@@ -66,10 +77,6 @@ int	philo_eat(t_philo *philo)
 	philo->right->status = 0;
 	pthread_mutex_unlock(&philo->right->mutex);
 	philo->time += 1;
-	if (philo->time == philo->arg->must && philo->arg->option)
-	{
-		return (1);
-	}
 	return (0);
 }
 
@@ -85,6 +92,8 @@ int	philo_sleep_think(t_philo *philo)
 	{
 		if (time_stamp(philo->ate) > philo->arg->die)
 			philo_dead(philo);
+		if (ft_check_dead(philo))
+			return (1);
 		usleep(500);
 		sleep += 500;
 	}
@@ -100,7 +109,7 @@ void	*each_philo(void *data)
 
 	philo = (t_philo *)(data);
 	philo->ate = philo->arg->start_time;
-	philo_wait(&philo);
+	philo_wait(philo);
 	if (philo->id % 2)
 	{
 		usleep(500);
@@ -110,6 +119,8 @@ void	*each_philo(void *data)
 		if (philo_fork(philo))
 			break ;
 		if (philo_eat(philo))
+			break ;
+		if (philo->time == philo->arg->must && philo->arg->option)
 			break ;
 		if (philo_sleep_think(philo))
 			break ;
