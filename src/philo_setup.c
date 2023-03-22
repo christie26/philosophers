@@ -14,8 +14,6 @@
 
 int	get_argument(int ac, char **av, t_argv *arg)
 {
-	struct timeval	start;
-
 	if (ft_error(ac != 5 && ac != 6, "Invalid argument number !"))
 		return (1);
 	arg->num = ft_atoi(av[1]);
@@ -29,8 +27,7 @@ int	get_argument(int ac, char **av, t_argv *arg)
 		return (1);
 	if (ac == 6 && ft_error(!arg->must, "Invalid argument value !"))
 		return (1);
-	gettimeofday(&start, 0);
-	arg->start_time = start;
+	arg->start_time = ft_get_time();
 	arg->option = ac - 5;
 	return (0);
 }

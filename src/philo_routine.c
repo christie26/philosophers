@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_act.c                                        :+:      :+:    :+:   */
+/*   philo_routine.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -33,7 +33,8 @@ int	philo_fork(t_philo *philo)
 {
 	if (take_lfork(philo))
 	{
-		philo_dead(philo);
+		if (!ft_check_dead(philo))
+			philo_dead(philo);
 		return (1);
 	}
 	if (ft_check_dead(philo))
@@ -41,7 +42,8 @@ int	philo_fork(t_philo *philo)
 	philo_print(philo, "has taken a fork");
 	if (take_rfork(philo))
 	{
-		philo_dead(philo);
+		if (!ft_check_dead(philo))
+			philo_dead(philo);
 		return (1);
 	}
 	if (ft_check_dead(philo))
@@ -73,10 +75,19 @@ int	philo_eat(t_philo *philo)
 
 int	philo_sleep_think(t_philo *philo)
 {
+	int	sleep;
+
 	if (ft_check_dead(philo))
 		return (1);
 	philo_print(philo, "is sleeping");
-	ft_usleep(philo->arg->sleep * 1000);
+	sleep = 0;
+	while (sleep < philo->arg->sleep * 1000)
+	{
+		if (time_stamp(philo->ate) > philo->arg->die)
+			philo_dead(philo);
+		usleep(500);
+		sleep += 500;
+	}
 	if (ft_check_dead(philo))
 		return (1);
 	philo_print(philo, "is thinking");
@@ -88,9 +99,12 @@ void	*each_philo(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)(data);
-	philo->ate = ft_get_time();
+	philo->ate = philo->arg->start_time;
+	philo_wait(&philo);
 	if (philo->id % 2)
+	{
 		usleep(500);
+	}
 	while (philo->status != DIED)
 	{
 		if (philo_fork(philo))

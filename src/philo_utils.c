@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_print.c                                      :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoonsele <yoonsele@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -72,10 +72,10 @@ void	philo_print(t_philo *philo, char *message)
 		pthread_mutex_unlock(&philo->arg->write);
 		return ;
 	}
-	if (ft_check_dead(philo))
-		return ;
 	pthread_mutex_lock(&philo->arg->write);
-	printf("%d %d %s\n", time_stamp(philo->arg->start_time), philo->id, message);
+	if (!ft_check_dead(philo))
+		printf("%d %d %s\n", time_stamp(philo->arg->start_time), \
+				philo->id, message);
 	pthread_mutex_unlock(&philo->arg->write);
 }
 
@@ -94,19 +94,19 @@ int	ft_check_dead(t_philo *philo)
 	}
 }
 
-void	philo_wait(t_philo *philo)
+void	philo_wait(t_philo **philo)
 {
 	int		waiting;
 
-	pthread_mutex_lock(&philo->arg->ready);
-	*philo->arg->ready_num += 1;
-	pthread_mutex_unlock(&philo->arg->ready);
+	pthread_mutex_lock(&(*philo)->arg->ready);
+	*(*philo)->arg->ready_num += 1;
+	pthread_mutex_unlock(&(*philo)->arg->ready);
 	waiting = 1;
 	while (waiting)
 	{
-		pthread_mutex_lock(&philo->arg->ready);
-		waiting = (*philo->arg->ready_num != philo->arg->num);
-		pthread_mutex_unlock(&philo->arg->ready);
+		pthread_mutex_lock(&(*philo)->arg->ready);
+		waiting = (*(*philo)->arg->ready_num != (*philo)->arg->num);
+		pthread_mutex_unlock(&(*philo)->arg->ready);
 		usleep(100);
-	}	
+	}
 }
