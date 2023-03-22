@@ -1,9 +1,9 @@
 SRCS		= 	main.c \
+				utils1.c \
+				utils2.c \
 				philo_setup.c \
-				philo_act.c \
-				philo_utils1.c \
-				philo_utils2.c \
-				philo_print.c
+				philo_routine.c \
+				philo_utils.c
 
 OBJS		:= $(SRCS:%.c=%.o)
 
@@ -26,7 +26,7 @@ $(OBJ_DIR):
 			mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_DIR)
-			$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@
+			$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): 	$(OBJS) $(LIBFT)
 			$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 

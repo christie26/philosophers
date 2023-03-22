@@ -16,7 +16,7 @@ int	get_argument(int ac, char **av, t_argv *arg)
 {
 	struct timeval	start;
 
-	if (ft_err_msg(ac != 5 && ac != 6, "Invalid argument number !"))
+	if (ft_error(ac != 5 && ac != 6, "Invalid argument number !"))
 		return (1);
 	arg->num = ft_atoi(av[1]);
 	arg->die = ft_atoi(av[2]);
@@ -24,10 +24,10 @@ int	get_argument(int ac, char **av, t_argv *arg)
 	arg->sleep = ft_atoi(av[4]);
 	if (ac == 6)
 		arg->must = ft_atoi(av[5]);
-	if (ft_err_msg((!arg->num || !arg->die || !arg->eat || !arg->sleep), \
+	if (ft_error((!arg->num || !arg->die || !arg->eat || !arg->sleep), \
 				"Invalid argument value !"))
 		return (1);
-	if (ac == 6 && ft_err_msg(!arg->must, "Invalid argument value !"))
+	if (ac == 6 && ft_error(!arg->must, "Invalid argument value !"))
 		return (1);
 	gettimeofday(&start, 0);
 	arg->start_time = start;
@@ -73,11 +73,11 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 	int				flag;
 	int				ready_num;
 
-	if (ft_err_msg(pthread_mutex_init(&arg->write, 0), "Fail mutex_init"))
+	if (ft_error(pthread_mutex_init(&arg->write, 0), "Fail mutex_init"))
 		return (1);
-	if (ft_err_msg(pthread_mutex_init(&arg->dead, 0), "Fail mutex_init"))
+	if (ft_error(pthread_mutex_init(&arg->dead, 0), "Fail mutex_init"))
 		return (1);
-	if (ft_err_msg(pthread_mutex_init(&arg->ready, 0), "Fail mutex_init"))
+	if (ft_error(pthread_mutex_init(&arg->ready, 0), "Fail mutex_init"))
 		return (1);
 	ready_num = 0;
 	arg->ready_num = &ready_num;
@@ -87,7 +87,7 @@ int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork)
 	i = -1;
 	while (++i < arg->num)
 	{
-		if (ft_err_msg(pthread_create(&(*philo)[i].t_id, 0, \
+		if (ft_error(pthread_create(&(*philo)[i].t_id, 0, \
 						&each_philo, (&(*philo)[i])), "Fail pthread_create"))
 			return (1);
 		usleep(300);

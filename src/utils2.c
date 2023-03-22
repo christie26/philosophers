@@ -22,7 +22,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	ft_err_msg(int condition, char *error_message)
+int	ft_error(int condition, char *error_message)
 {
 	if (!condition)
 		return (0);

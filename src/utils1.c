@@ -12,7 +12,7 @@
 
 #include "../include/philo.h"
 
-struct timeval	get_time(void)
+struct timeval	ft_get_time(void)
 {
 	struct timeval	cur;
 
@@ -26,7 +26,7 @@ int	time_stamp(struct timeval start)
 	int				tv_sec;
 	int				tv_usec;
 
-	cur = get_time();
+	cur = ft_get_time();
 	tv_sec = (int)(cur.tv_sec - start.tv_sec);
 	tv_usec = cur.tv_usec - start.tv_usec;
 	tv_usec += tv_sec * 1000000;
@@ -37,7 +37,7 @@ void	ft_usleep(int time)
 {
 	struct timeval	start;
 
-	start = get_time();
+	start = ft_get_time();
 	while (time_stamp(start) < time / 1000)
 	{
 		usleep(100);

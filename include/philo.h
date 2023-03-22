@@ -58,22 +58,25 @@ typedef struct s_philo {
 }	t_philo;
 
 // set-up
-int	get_argument(int ac, char **av, t_argv *arg);
-int	ft_fork_init(t_fork **ptr, int num);
-int	ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork);
+int				get_argument(int ac, char **av, t_argv *arg);
+int				ft_fork_init(t_fork **ptr, int num);
+int				ft_create_thread(t_argv *arg, t_philo **philo, t_fork **fork);
 
-//utils
+// utils
 int				ft_strlen(char *str);
 int				ft_atoi(char *str);
-int				ft_err_msg(int condition, char *error_message);
-struct timeval	get_time(void);
+int				ft_error(int condition, char *error_message);
+struct timeval	ft_get_time(void);
 int				time_stamp(struct timeval start);
 void			ft_usleep(int time);
 int				ft_check_dead(t_philo *philo);
 
-void	*each_philo(void *data);
-void	philo_print(t_philo *philo, char *message);
-int		philo_dead(t_philo *philo);
-int		philo_sleep_think(t_philo *philo);
+// philo
+void			*each_philo(void *data);
+int				take_lfork(t_philo *philo);
+int				take_rfork(t_philo *philo);
+void			philo_print(t_philo *philo, char *message);
+int				ft_check_dead(t_philo *philo);
+void			philo_wait(t_philo *philo);
 
 #endif
