@@ -68,15 +68,16 @@ int				ft_atoi(char *str);
 int				ft_error(int condition, char *error_message);
 struct timeval	ft_get_time(void);
 int				time_stamp(struct timeval start);
-void			ft_usleep(int time);
-int				ft_check_dead(t_philo *philo);
+int				ft_usleep2(t_philo *philo, int time);
+int				ft_usleep1(t_philo *philo, int time);
 
 // philo
 void			*each_philo(void *data);
 int				take_lfork(t_philo *philo);
 int				take_rfork(t_philo *philo);
-void			philo_print(t_philo *philo, char *message);
 int				ft_check_dead(t_philo *philo);
+void			philo_dead(t_philo *philo);
+void			philo_print(t_philo *philo, char *message);
 void			philo_wait(t_philo *philo);
 
 #endif

@@ -12,7 +12,7 @@
 
 #include "../include/philo.h"
 
-int	philo_dead(t_philo *philo)
+void	philo_dead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->arg->dead);
 	if (*philo->arg->flag == 0)
@@ -26,7 +26,6 @@ int	philo_dead(t_philo *philo)
 		pthread_mutex_unlock(&philo->arg->dead);
 	}
 	philo->status = DIED;
-	return (1);
 }
 
 int	philo_fork(t_philo *philo)
@@ -54,22 +53,12 @@ int	philo_fork(t_philo *philo)
 
 int	philo_eat(t_philo *philo)
 {
-	int	eat;
-
 	if (ft_check_dead(philo))
 		return (1);
 	philo->ate = ft_get_time();
 	philo_print(philo, "is eating");
-	eat = 0;
-	while (eat < philo->arg->eat * 1000)
-	{
-		if (time_stamp(philo->ate) > philo->arg->die)
-			philo_dead(philo);
-		if (ft_check_dead(philo))
-			return (1);
-		usleep(500);
-		eat += 500;
-	}
+	if (ft_usleep2(philo, philo->arg->eat * 1000))
+		return (1);
 	pthread_mutex_lock(&philo->left->mutex);
 	philo->left->status = 0;
 	pthread_mutex_unlock(&philo->left->mutex);
@@ -82,21 +71,11 @@ int	philo_eat(t_philo *philo)
 
 int	philo_sleep_think(t_philo *philo)
 {
-	int	sleep;
-
 	if (ft_check_dead(philo))
 		return (1);
 	philo_print(philo, "is sleeping");
-	sleep = 0;
-	while (sleep < philo->arg->sleep * 1000)
-	{
-		if (time_stamp(philo->ate) > philo->arg->die)
-			philo_dead(philo);
-		if (ft_check_dead(philo))
-			return (1);
-		usleep(500);
-		sleep += 500;
-	}
+	if (ft_usleep1(philo, philo->arg->sleep * 1000))
+		return (1);
 	if (ft_check_dead(philo))
 		return (1);
 	philo_print(philo, "is thinking");

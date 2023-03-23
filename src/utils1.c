@@ -33,13 +33,35 @@ int	time_stamp(struct timeval start)
 	return (tv_usec / 1000);
 }
 
-void	ft_usleep(int time)
+int	ft_usleep2(t_philo *philo, int time)
 {
 	struct timeval	start;
 
 	start = ft_get_time();
 	while (time_stamp(start) < time / 1000)
 	{
-		usleep(100);
+		if (ft_check_dead(philo))
+			return (1);
+		usleep(500);
 	}
+	return (0);
+}
+
+int	ft_usleep1(t_philo *philo, int time)
+{
+	struct timeval	start;
+
+	start = ft_get_time();
+	while (time_stamp(start) < time / 1000)
+	{
+		if (time_stamp(philo->ate) > philo->arg->die)
+		{
+			philo_dead(philo);
+			return (1);
+		}
+		if (ft_check_dead(philo))
+			return (1);
+		usleep(500);
+	}
+	return (0);
 }
