@@ -100,6 +100,8 @@ void	philo_wait(t_philo *philo)
 
 	pthread_mutex_lock(&philo->arg->ready);
 	*philo->arg->ready_num += 1;
+	if (*philo->arg->ready_num == philo->arg->num)
+		philo->arg->start_time = ft_get_time();
 	pthread_mutex_unlock(&philo->arg->ready);
 	waiting = 1;
 	while (waiting)
