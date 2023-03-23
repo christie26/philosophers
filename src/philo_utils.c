@@ -31,7 +31,7 @@ int	take_lfork(t_philo *philo)
 		else
 		{
 			pthread_mutex_unlock(&philo->left->mutex);
-			usleep(500);
+			usleep(300);
 		}
 	}
 	return (0);
@@ -56,7 +56,7 @@ int	take_rfork(t_philo *philo)
 		else
 		{
 			pthread_mutex_unlock(&philo->right->mutex);
-			usleep(500);
+			usleep(300);
 		}
 	}
 	return (0);

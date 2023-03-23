@@ -33,7 +33,9 @@ int	philo_fork(t_philo *philo)
 	if (take_lfork(philo))
 	{
 		if (!ft_check_dead(philo))
+		{
 			philo_dead(philo);
+		}
 		return (1);
 	}
 	if (ft_check_dead(philo))
@@ -42,7 +44,9 @@ int	philo_fork(t_philo *philo)
 	if (take_rfork(philo))
 	{
 		if (!ft_check_dead(philo))
+		{
 			philo_dead(philo);
+		}
 		return (1);
 	}
 	if (ft_check_dead(philo))
@@ -87,8 +91,8 @@ void	*each_philo(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)(data);
-	philo->ate = philo->arg->start_time;
 	philo_wait(philo);
+	philo->ate = philo->arg->start_time;
 	if (philo->id % 2)
 		usleep(500);
 	while (philo->status != DIED)
