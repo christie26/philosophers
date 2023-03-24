@@ -14,9 +14,6 @@
 
 int	take_lfork(t_philo *philo)
 {
-	int	wait;
-
-	wait = 0;
 	while (1)
 	{
 		if (time_stamp(philo->ate) > philo->arg->die)
@@ -31,21 +28,14 @@ int	take_lfork(t_philo *philo)
 		else
 		{
 			pthread_mutex_unlock(&philo->left->mutex);
-			if (wait > 30)
-				usleep(300);
-			else
-				usleep(5000 - wait * 100);
+			usleep(300);
 		}
-		wait++;
 	}
 	return (0);
 }
 
 int	take_rfork(t_philo *philo)
 {
-	int	wait;
-
-	wait = 0;
 	while (1)
 	{
 		if (time_stamp(philo->ate) > philo->arg->die)
@@ -60,12 +50,8 @@ int	take_rfork(t_philo *philo)
 		else
 		{
 			pthread_mutex_unlock(&philo->right->mutex);
-			if (wait > 30)
-				usleep(300);
-			else
-				usleep(5000 - wait * 100);
+			usleep(300);
 		}
-		wait++;
 	}
 	return (0);
 }
