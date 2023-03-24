@@ -94,7 +94,7 @@ void	*each_philo(void *data)
 	philo_wait(philo);
 	philo->ate = philo->arg->start_time;
 	if (philo->id % 2)
-		usleep(500);
+		usleep(500 + philo->arg->num * 10);
 	while (philo->status != DIED)
 	{
 		if (philo_fork(philo))
